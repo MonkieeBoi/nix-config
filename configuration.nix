@@ -69,12 +69,12 @@
     # List packages installed in system profile
     environment.systemPackages = with pkgs; [
         (hiPrio clang-tools)
+        (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
         (mpv.override {scripts = [mpvScripts.mpris];})
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
         alsa-utils
         auto-cpufreq
         brightnessctl
-        cargo
         chafa
         clipse
         dotool
@@ -88,6 +88,7 @@
         fzf
         gcc
         git
+        gnupg
         grim
         hyprlock
         hyprpicker
@@ -103,21 +104,25 @@
         libsForQt5.qt5ct
         lua-language-server
         lxqt.lxqt-policykit
+        lynx
+        meli
         mmv-go
         nnn
         nodejs_22
         nordic
         nordzy-cursor-theme
         playerctl
+        pinentry-curses
         prismlauncher
         ps_mem
         pulsemixer
         python3
+        python312Packages.python-lsp-server
         qmk
         qrcp
         qutebrowser
         ripgrep
-        rustc
+        rustup
         satty
         simple-mtpfs
         slurp
@@ -160,6 +165,7 @@
     programs = {
         hyprland.enable = true;
         dconf.enable = true;
+        direnv.enable = true;
         neovim = {
             enable = true;
             defaultEditor = true;
@@ -261,6 +267,8 @@
 
     i18n.inputMethod = {
         enabled = "fcitx5";
+        # enabled = true;
+        # type = "fcitx5";
         fcitx5.addons = with pkgs; [
             fcitx5-anthy
             fcitx5-gtk
@@ -272,11 +280,13 @@
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
-    # programs.mtr.enable = true;
-    # programs.gnupg.agent = {
-    #   enable = true;
-    #   enableSSHSupport = true;
-    # };
+    programs.mtr.enable = true;
+    services.pcscd.enable = true;
+    programs.gnupg.agent = {
+        enable = true;
+        enableSSHSupport = true;
+        pinentryPackage = pkgs.pinentry-curses;
+    };
 
     services.openssh = {
         enable = true;
