@@ -22,6 +22,7 @@
             "rd.udev.log_level=3"
             "boot.shell_on_fail"
             "i915.enable_guc=2"
+            "nowatchdog"
         ];
         loader = {
             efi.canTouchEfiVariables = true;
@@ -59,7 +60,7 @@
     users.users.monke = {
         isNormalUser = true;
         description = "monke";
-        extraGroups = [ "networkmanager" "wheel" "input" "storage" "video" "optical" "keyd" ];
+        extraGroups = [ "adbusers" "networkmanager" "wheel" "input" "storage" "video" "optical" "keyd" ];
         packages = with pkgs; [];
     };
 
@@ -68,11 +69,22 @@
 
     # List packages installed in system profile
     environment.systemPackages = with pkgs; [
+        # lynx
+        # meli
         (hiPrio clang-tools)
-        (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
         (mpv.override {scripts = [mpvScripts.mpris];})
+        (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
+        (glfw-wayland-minecraft.overrideAttrs (old: {
+            patches = [
+                (fetchpatch2 {
+                  url = "https://raw.githubusercontent.com/tesselslate/waywall/012851ff6ac4ed7b74dc41683f275b8384ce36a7/doc/assets/glfw.patch";
+                  hash = "sha256-2PYmEUJVO9WrTbvnZp+RgJ9tTIqB9q4QVeABplH0tQY=";
+                })
+            ];
+        }))
         alsa-utils
+        anki
         auto-cpufreq
         brightnessctl
         chafa
@@ -94,6 +106,7 @@
         hyprpicker
         imagemagick
         imv
+        java-language-server
         jdk
         jq
         kdePackages.qt6ct
@@ -104,15 +117,20 @@
         libsForQt5.qt5ct
         lua-language-server
         lxqt.lxqt-policykit
-        lynx
-        meli
+        gnumake
+        man-pages
+        man-pages-posix
         mmv-go
+        networkmanagerapplet
+        nil
         nnn
         nodejs_22
         nordic
         nordzy-cursor-theme
-        playerctl
+        orca-slicer
         pinentry-curses
+        pinta
+        playerctl
         prismlauncher
         ps_mem
         pulsemixer
@@ -126,6 +144,7 @@
         satty
         simple-mtpfs
         slurp
+        sqls
         swaybg
         thermald
         tmux
@@ -149,10 +168,17 @@
         xdg-utils
         xdragon
         yambar
-        yazi
         yt-dlp
         zathura
         zip
+        # TMP JUST FOR SCHOOL
+        pgadmin4-desktopmode
+        libreoffice-fresh
+        drawio
+        ngrok
+        zoom-us
+        docker
+        postgresql
     ];
 
     fonts.packages = with pkgs; [
@@ -162,13 +188,21 @@
         (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
 
+    documentation.dev.enable = true;
+
     programs = {
         hyprland.enable = true;
         dconf.enable = true;
         direnv.enable = true;
+        gamemode.enable = true;
+        adb.enable = true;
         neovim = {
             enable = true;
             defaultEditor = true;
+        };
+        appimage = {
+            enable = true;
+            binfmt = true;
         };
         steam = {
             enable = true;
@@ -193,15 +227,28 @@
 
     environment.etc."keyd/keyd.conf".text = builtins.readFile ./keyd.conf;
 
+    boot.extraModulePackages = with config.boot.kernelPackages; [
+        v4l2loopback
+    ];
+    boot.extraModprobeConfig = ''
+        options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+        '';
+
     hardware.graphics = {
         enable = true;
         extraPackages = with pkgs; [
             intel-media-driver # LIBVA_DRIVER_NAME=iHD
+            intel-vaapi-driver # LIBVA_DRIVER_NAME=i965
             libvdpau-va-gl
             vpl-gpu-rt
         ];
     };
-    environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
+
+    # Environment variables
+    environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "iHD";
+        NIX_SHELL_PRESERVE_PROMPT = 1;
+    };
 
     # XDG Portals
     xdg = {
@@ -238,6 +285,16 @@
             alsa.support32Bit = true;
             pulse.enable = true;
             jack.enable = true;
+            wireplumber = {
+                enable = true;
+                extraConfig = {
+                    "10-disable-camera" = {
+                        "wireplumber.profiles" = {
+                            main."monitor.libcamera" = "disabled";
+                        };
+                    };
+                };
+            };
         };
         auto-cpufreq = {
             enable = true;
@@ -274,6 +331,7 @@
             fcitx5-gtk
             fcitx5-nord
             libsForQt5.fcitx5-qt
+            libsForQt5.fcitx5-unikey
         ];
         fcitx5.waylandFrontend = true;
     };
