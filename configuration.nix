@@ -27,6 +27,7 @@
         loader = {
             efi.canTouchEfiVariables = true;
             systemd-boot.enable = true;
+            timeout = 1;
         };
     };
 
@@ -87,6 +88,7 @@
         anki
         auto-cpufreq
         brightnessctl
+        cgdb
         chafa
         clipse
         dotool
@@ -99,6 +101,7 @@
         foot
         fzf
         gcc
+        gdb
         git
         gnupg
         grim
@@ -122,6 +125,7 @@
         man-pages-posix
         mmv-go
         networkmanagerapplet
+        ngrok
         nil
         nnn
         nodejs_22
@@ -171,13 +175,12 @@
         yt-dlp
         zathura
         zip
+        zoxide
         # TMP JUST FOR SCHOOL
         pgadmin4-desktopmode
         libreoffice-fresh
         drawio
-        ngrok
         zoom-us
-        docker
         postgresql
     ];
 
@@ -245,9 +248,12 @@
     };
 
     # Environment variables
-    environment.sessionVariables = {
-        LIBVA_DRIVER_NAME = "iHD";
-        NIX_SHELL_PRESERVE_PROMPT = 1;
+    environment = {
+        wordlist.enable = true;
+        sessionVariables = {
+            LIBVA_DRIVER_NAME = "iHD";
+            NIX_SHELL_PRESERVE_PROMPT = 1;
+        };
     };
 
     # XDG Portals
