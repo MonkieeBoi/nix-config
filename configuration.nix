@@ -4,7 +4,9 @@
 
 { config, pkgs, lib, ... }:
 
-{
+let
+    stable = import <nixos-stable> { config = { allowUnfree = true; }; };
+in {
     imports = [
         ./hardware-configuration.nix
     ];
@@ -126,12 +128,12 @@
         mmv-go
         networkmanagerapplet
         ngrok
-        nil
+        nixd
         nnn
         nodejs_22
         nordic
         nordzy-cursor-theme
-        orca-slicer
+        # orca-slicer
         pinentry-curses
         pinta
         playerctl
@@ -141,16 +143,19 @@
         python3
         python312Packages.python-lsp-server
         qmk
+        qpwgraph
         qrcp
-        qutebrowser
+        (qutebrowser.override { enableWideVine = true; })
         ripgrep
         rustup
         satty
         simple-mtpfs
         slurp
         sqls
+        sshfs
         swaybg
         thermald
+        tldr
         tmux
         tofi
         tor-browser
@@ -225,7 +230,7 @@
 
     programs.nix-ld = {
         enable = true;
-        libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
+        # libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
     };
 
     environment.etc."keyd/keyd.conf".text = builtins.readFile ./keyd.conf;
@@ -371,7 +376,25 @@
             requires = [ "local-fs.target" ];
             after = [ "local-fs.target" ];
         };
-        transmission.wantedBy = lib.mkForce [];
+        # transmission.wantedBy = lib.mkForce [];
+    };
+
+    services.systembus-notify.enable = true;
+    systemd.user.services.fnotify = {
+        script = ''
+            ${pkgs.libnotify}/bin/notify-send "f"
+            '';
+        serviceConfig = {
+            Type = "oneshot";
+        };
+    };
+    systemd.user.timers.fnotify = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+            OnCalendar = "*-*-* 23:59:00";
+            Unit = "fnotify.service";
+            Persistent = true;
+        };
     };
 
     system.stateVersion = "24.05";
