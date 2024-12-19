@@ -63,7 +63,7 @@ in {
     users.users.monke = {
         isNormalUser = true;
         description = "monke";
-        extraGroups = [ "adbusers" "networkmanager" "wheel" "input" "storage" "video" "optical" "keyd" ];
+        extraGroups = [ "adbusers" "networkmanager" "wheel" "input" "storage" "video" "optical" "keyd" "docker" ];
         packages = with pkgs; [];
     };
 
@@ -133,7 +133,7 @@ in {
         nodejs_22
         nordic
         nordzy-cursor-theme
-        # orca-slicer
+        orca-slicer
         pinentry-curses
         pinta
         playerctl
@@ -182,18 +182,16 @@ in {
         zip
         zoxide
         # TMP JUST FOR SCHOOL
-        pgadmin4-desktopmode
         libreoffice-fresh
         drawio
         zoom-us
-        postgresql
     ];
 
     fonts.packages = with pkgs; [
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
-        (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+        nerd-fonts.jetbrains-mono
     ];
 
     documentation.dev.enable = true;
@@ -346,6 +344,11 @@ in {
         ];
         fcitx5.waylandFrontend = true;
     };
+
+    # virtualisation.docker = {
+    #     enable = true;
+    #     enableOnBoot = false;
+    # };
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
