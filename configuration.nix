@@ -175,7 +175,7 @@ in {
         xdg-desktop-portal-hyprland
         xdg-user-dirs
         xdg-utils
-        xdragon
+        blobdrop
         yambar
         yt-dlp
         zathura
