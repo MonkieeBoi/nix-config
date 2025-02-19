@@ -72,25 +72,20 @@ in {
 
     # List packages installed in system profile
     environment.systemPackages = with pkgs; [
+        # --------- My Packages ---------
+        (callPackage ./pkgs/waywall.nix {})
+        # -------------------------------
         # lynx
         # meli
         (hiPrio clang-tools)
         (mpv.override {scripts = [mpvScripts.mpris];})
         (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
-        (glfw-wayland-minecraft.overrideAttrs (old: {
-            patches = [
-                (fetchpatch2 {
-                  url = "https://raw.githubusercontent.com/tesselslate/waywall/012851ff6ac4ed7b74dc41683f275b8384ce36a7/doc/assets/glfw.patch";
-                  hash = "sha256-2PYmEUJVO9WrTbvnZp+RgJ9tTIqB9q4QVeABplH0tQY=";
-                })
-            ];
-        }))
         alsa-utils
         anki
         auto-cpufreq
         brightnessctl
-        cgdb
+        # cgdb
         chafa
         clipse
         dotool
@@ -117,15 +112,18 @@ in {
         kdePackages.qt6ct
         keyd
         killall
+        lazydocker
         libclang
         libnotify
         libsForQt5.qt5ct
         lua-language-server
         lxqt.lxqt-policykit
         gnumake
+        gopls
         man-pages
         man-pages-posix
         mmv-go
+        mongodb-compass
         networkmanagerapplet
         ngrok
         nixd
@@ -133,7 +131,8 @@ in {
         nodejs_22
         nordic
         nordzy-cursor-theme
-        orca-slicer
+        osu-lazer-bin
+        # orca-slicer
         pinentry-curses
         pinta
         playerctl
@@ -218,7 +217,7 @@ in {
         };
     };
 
-    boot.loader.systemd-boot.configurationLimit = 10;
+    boot.loader.systemd-boot.configurationLimit = 5;
     nix.gc = {
         automatic = true;
         dates = "weekly";
@@ -229,6 +228,19 @@ in {
     programs.nix-ld = {
         enable = true;
         # libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
+        libraries = with pkgs; [
+            (glfw-wayland-minecraft.overrideAttrs (old: {
+                patches = [
+                    (fetchpatch2 {
+                      url = "https://raw.githubusercontent.com/tesselslate/waywall/012851ff6ac4ed7b74dc41683f275b8384ce36a7/doc/assets/glfw.patch";
+                      hash = "sha256-2PYmEUJVO9WrTbvnZp+RgJ9tTIqB9q4QVeABplH0tQY=";
+                    })
+                ];
+            }))
+            libxkbcommon
+            xorg.libX11
+            xorg.libXt
+        ];
     };
 
     environment.etc."keyd/keyd.conf".text = builtins.readFile ./keyd.conf;
@@ -345,10 +357,10 @@ in {
         fcitx5.waylandFrontend = true;
     };
 
-    # virtualisation.docker = {
-    #     enable = true;
-    #     enableOnBoot = false;
-    # };
+    virtualisation.docker = {
+        enable = true;
+        enableOnBoot = false;
+    };
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
@@ -379,7 +391,7 @@ in {
             requires = [ "local-fs.target" ];
             after = [ "local-fs.target" ];
         };
-        # transmission.wantedBy = lib.mkForce [];
+        transmission.wantedBy = lib.mkForce [];
     };
 
     services.systembus-notify.enable = true;
