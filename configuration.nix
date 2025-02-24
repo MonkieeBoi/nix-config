@@ -74,6 +74,7 @@ in {
     environment.systemPackages = with pkgs; [
         # --------- My Packages ---------
         (callPackage ./pkgs/waywall.nix {})
+        (callPackage ./pkgs/ninb.nix {})
         # -------------------------------
         # lynx
         # meli
