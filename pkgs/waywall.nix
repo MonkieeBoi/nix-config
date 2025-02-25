@@ -2,11 +2,10 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  egl-wayland,
   libspng,
   libxkbcommon,
   luajit,
-  mesa_glu,
+  libGL,
   meson,
   ninja,
   pkg-config,
@@ -31,17 +30,16 @@ stdenv.mkDerivation {
     meson
     ninja
     pkg-config
-    wayland-protocols
     wayland-scanner
   ];
 
   buildInputs = [
-    egl-wayland
     libspng
     libxkbcommon
     luajit
-    mesa_glu
+    libGL
     wayland
+    wayland-protocols
     xorg.libxcb
     xwayland
   ];
