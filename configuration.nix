@@ -82,9 +82,11 @@ in {
         (mpv.override {scripts = [mpvScripts.mpris];})
         (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
+        (qutebrowser.override { enableWideVine = true; })
         alsa-utils
         anki
         auto-cpufreq
+        blobdrop
         brightnessctl
         # cgdb
         chafa
@@ -101,7 +103,9 @@ in {
         gcc
         gdb
         git
+        gnumake
         gnupg
+        gopls
         grim
         hyprlock
         hyprpicker
@@ -119,8 +123,6 @@ in {
         libsForQt5.qt5ct
         lua-language-server
         lxqt.lxqt-policykit
-        gnumake
-        gopls
         man-pages
         man-pages-posix
         mmv-go
@@ -132,8 +134,8 @@ in {
         nodejs_22
         nordic
         nordzy-cursor-theme
-        osu-lazer-bin
         # orca-slicer
+        osu-lazer-bin
         pinentry-curses
         pinta
         playerctl
@@ -145,7 +147,6 @@ in {
         qmk
         qpwgraph
         qrcp
-        (qutebrowser.override { enableWideVine = true; })
         ripgrep
         rustup
         satty
@@ -175,7 +176,6 @@ in {
         xdg-desktop-portal-hyprland
         xdg-user-dirs
         xdg-utils
-        blobdrop
         yambar
         yt-dlp
         zathura
