@@ -73,7 +73,6 @@ in {
     # List packages installed in system profile
     environment.systemPackages = with pkgs; [
         # --------- My Packages ---------
-        (callPackage ./pkgs/waywall.nix {})
         (callPackage ./pkgs/ninb.nix {})
         # -------------------------------
         # lynx
@@ -170,6 +169,7 @@ in {
         vesktop
         vim
         waybar
+        waywall
         wget
         wl-clipboard
         wl-screenrec
@@ -192,6 +192,7 @@ in {
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
         nerd-fonts.jetbrains-mono
+        carlito
     ];
 
     documentation.dev.enable = true;
