@@ -181,7 +181,6 @@
         zoxide
         # TMP JUST FOR SCHOOL
         libreoffice-fresh
-        drawio
         zoom-us
     ];
 
@@ -344,9 +343,8 @@
     };
 
     i18n.inputMethod = {
-        enabled = "fcitx5";
-        # enabled = true;
-        # type = "fcitx5";
+        enable = true;
+        type = "fcitx5";
         fcitx5.addons = with pkgs; [
             fcitx5-anthy
             fcitx5-gtk
