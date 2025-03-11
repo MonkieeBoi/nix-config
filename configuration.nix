@@ -4,9 +4,7 @@
 
 { config, pkgs, lib, ... }:
 
-let
-    stable = import <nixos-stable> { config = { allowUnfree = true; }; };
-in {
+{
     imports = [
         ./hardware-configuration.nix
     ];
