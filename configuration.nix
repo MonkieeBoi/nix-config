@@ -139,8 +139,9 @@
         prismlauncher
         ps_mem
         pulsemixer
-        python3
-        python312Packages.python-lsp-server
+        (python3.withPackages(ps: with ps; [ python-lsp-server ] ++ python-lsp-server.optional-dependencies.all ))
+        # python3
+        # python312Packages.python-lsp-server
         qmk
         qpwgraph
         qrcp
@@ -182,7 +183,7 @@
         # TMP JUST FOR SCHOOL
         libreoffice-fresh
         zoom-us
-    ];
+    ] ++ python312Packages.python-lsp-server.optional-dependencies.all;
 
     fonts.packages = with pkgs; [
         noto-fonts
