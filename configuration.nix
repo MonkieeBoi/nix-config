@@ -183,7 +183,8 @@
         # TMP JUST FOR SCHOOL
         libreoffice-fresh
         zoom-us
-    ] ++ python312Packages.python-lsp-server.optional-dependencies.all;
+        drawio
+    ];
 
     fonts.packages = with pkgs; [
         noto-fonts
