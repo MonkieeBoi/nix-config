@@ -115,6 +115,7 @@
         keyd
         killall
         lazydocker
+        lazygit
         libclang
         libnotify
         libsForQt5.qt5ct
@@ -127,6 +128,7 @@
         networkmanagerapplet
         ngrok
         nixd
+        nixfmt-rfc-style
         nnn
         nodejs_22
         nordic
