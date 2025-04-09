@@ -6,7 +6,7 @@
   makeWrapper,
   jre,
   libxkbcommon,
-  xorg
+  xorg,
 }:
 stdenv.mkDerivation rec {
   name = "ninb";
@@ -19,32 +19,35 @@ stdenv.mkDerivation rec {
 
   dontUnpack = true;
 
-  nativeBuildInputs = [ makeWrapper ];
-
-  buildInputs = [
-    libxkbcommon
-    xorg.libX11
-    xorg.libXt
+  nativeBuildInputs = [
+    makeWrapper
   ];
 
   installPhase = ''
-    find .
-    mkdir -pv $out/share/java $out/bin
-    cp ${src} $out/share/java/${name}-${version}.jar
+    runHook preInstall
+
+    install -Dm644 ${src} $out/share/java/${name}-${version}.jar 
 
     makeWrapper ${jre}/bin/java $out/bin/ninb \
       --add-flags "-jar $out/share/java/${name}-${version}.jar" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath [
           libxkbcommon
           xorg.libX11
           xorg.libXt
-        ]}
+          xorg.libXtst
+          xorg.libXinerama
+          xorg.libxcb
+        ]
+      }
+
+    runHook postInstall
   '';
 
   meta = {
     homepage = "https://github.com/Ninjabrain1/Ninjabrain-Bot";
     description = "Accurate stronghold calculator for Minecraft speedrunning.";
-    platforms = lib.platforms.unix;
+    platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [
       monkieeboi
     ];
