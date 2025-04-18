@@ -162,6 +162,7 @@
         tor-browser
         transmission_4
         trash-cli
+        tray-tui
         tty-clock
         typst
         udisks
