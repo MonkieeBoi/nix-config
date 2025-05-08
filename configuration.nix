@@ -148,7 +148,6 @@
         qpwgraph
         qrcp
         ripgrep
-        rustup
         satty
         simple-mtpfs
         slurp
@@ -241,9 +240,6 @@
                     })
                 ];
             }))
-            libxkbcommon
-            xorg.libX11
-            xorg.libXt
         ];
     };
 
