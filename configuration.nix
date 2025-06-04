@@ -29,6 +29,10 @@
             systemd-boot.enable = true;
             timeout = 1;
         };
+        extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+        extraModprobeConfig = ''
+            options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+        '';
     };
 
     networking.hostName = "nixbtw";
@@ -73,19 +77,17 @@
         # --------- My Packages ---------
         (callPackage ./pkgs/ninb.nix {})
         # -------------------------------
-        # lynx
-        # meli
         (hiPrio clang-tools)
         (mpv.override {scripts = [mpvScripts.mpris];})
         (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
         (qutebrowser.override { enableWideVine = true; })
+        (python3.withPackages(ps: with ps; [ python-lsp-server ] ++ python-lsp-server.optional-dependencies.all ))
         alsa-utils
         anki
         auto-cpufreq
         blobdrop
         brightnessctl
-        # cgdb
         chafa
         clipse
         dotool
@@ -118,6 +120,7 @@
         lazygit
         libclang
         libnotify
+        libqalculate
         libsForQt5.qt5ct
         lua-language-server
         lxqt.lxqt-policykit
@@ -141,9 +144,6 @@
         prismlauncher
         ps_mem
         pulsemixer
-        (python3.withPackages(ps: with ps; [ python-lsp-server ] ++ python-lsp-server.optional-dependencies.all ))
-        # python3
-        # python312Packages.python-lsp-server
         qmk
         qpwgraph
         qrcp
@@ -169,6 +169,7 @@
         upower
         vesktop
         vim
+        walker
         waybar
         waywall
         wget
@@ -244,13 +245,6 @@
     };
 
     environment.etc."keyd/keyd.conf".text = builtins.readFile ./keyd.conf;
-
-    boot.extraModulePackages = with config.boot.kernelPackages; [
-        v4l2loopback
-    ];
-    boot.extraModprobeConfig = ''
-        options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
-        '';
 
     hardware.graphics = {
         enable = true;
