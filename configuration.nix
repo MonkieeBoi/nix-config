@@ -79,12 +79,13 @@
         # -------------------------------
         (hiPrio clang-tools)
         (mpv.override {scripts = [mpvScripts.mpris];})
-        (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
+        (pass.withExtensions (exts: [exts.pass-otp]))
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
         (qutebrowser.override { enableWideVine = true; })
         (python3.withPackages(ps: with ps; [ python-lsp-server ] ++ python-lsp-server.optional-dependencies.all ))
         alsa-utils
         anki
+        anyrun
         auto-cpufreq
         blobdrop
         brightnessctl
@@ -138,6 +139,7 @@
         nordzy-cursor-theme
         # orca-slicer
         osu-lazer-bin
+        papirus-nord
         pinentry-curses
         pinta
         playerctl
@@ -169,7 +171,6 @@
         upower
         vesktop
         vim
-        walker
         waybar
         waywall
         wget
