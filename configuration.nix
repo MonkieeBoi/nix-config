@@ -121,7 +121,6 @@
         lazygit
         libclang
         libnotify
-        libqalculate
         libsForQt5.qt5ct
         lua-language-server
         lxqt.lxqt-policykit
@@ -172,7 +171,14 @@
         vesktop
         vim
         waybar
-        waywall
+        (waywall.overrideAttrs (old: {
+            src = old.src.override {
+                rev = "16607ea6ad34e62b19d3b8ce1d2fdda5a39d41ec";
+                hash = "sha256-1ZlyhacDm/8qyBPvpuqQKnSg+9qx78chUK+hH7+ahIY=";
+            };
+            patches = (old.patches or []) ++ [ ./patches/waywall.patch ];
+          })
+        )
         wget
         wl-clipboard
         wl-screenrec
@@ -283,7 +289,15 @@
     services = {
         udisks2.enable = true;
         upower.enable = true;
-        printing.enable = true;
+        # printing = {
+        #     enable = true;
+        #     drivers = with pkgs; [ gutenprint brlaser ];
+        # };
+        # avahi = {
+        #   enable = true;
+        #   nssmdns4 = true;
+        #   openFirewall = true;
+        # };
         thermald.enable = true;
         getty = {
             loginOptions = "-p -- monke";
