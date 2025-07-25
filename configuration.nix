@@ -173,10 +173,9 @@
         waybar
         (waywall.overrideAttrs (old: {
             src = old.src.override {
-                rev = "16607ea6ad34e62b19d3b8ce1d2fdda5a39d41ec";
-                hash = "sha256-1ZlyhacDm/8qyBPvpuqQKnSg+9qx78chUK+hH7+ahIY=";
+                rev = "992fbfd2fcc62570ee8e79a53efeb0e5b770ec4e";
+                hash = "sha256-b+Lc1VGpeNwcxRAaDvsE5Gkx7DVOl3HyHP19YJyH/OY=";
             };
-            patches = (old.patches or []) ++ [ ./patches/waywall.patch ];
           })
         )
         wget

@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
     install -Dm644 ${src} $out/share/java/${name}-${version}.jar 
 
     makeWrapper ${jre}/bin/java $out/bin/ninb \
-      --add-flags "-jar $out/share/java/${name}-${version}.jar -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel" \
+      --add-flags "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -jar $out/share/java/${name}-${version}.jar" \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
           libxkbcommon
