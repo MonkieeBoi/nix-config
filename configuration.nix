@@ -89,6 +89,7 @@
         auto-cpufreq
         blobdrop
         brightnessctl
+        cava
         chafa
         clipse
         dotool
@@ -148,6 +149,7 @@
         qmk
         qpwgraph
         qrcp
+        quickshell
         ripgrep
         satty
         simple-mtpfs
