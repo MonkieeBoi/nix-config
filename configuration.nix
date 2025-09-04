@@ -175,8 +175,8 @@
         waybar
         (waywall.overrideAttrs (old: {
             src = old.src.override {
-                rev = "992fbfd2fcc62570ee8e79a53efeb0e5b770ec4e";
-                hash = "sha256-b+Lc1VGpeNwcxRAaDvsE5Gkx7DVOl3HyHP19YJyH/OY=";
+                rev = "ad569de1ddae6b034c7095795a42f044746a55a7";
+                hash = "sha256-CzP6PFYC6yVxUAxkJ4Zhm4Zf4Qt8u4WjXUYfkgc6nyU=";
             };
           })
         )
