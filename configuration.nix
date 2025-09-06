@@ -76,6 +76,7 @@
     environment.systemPackages = with pkgs; [
         # --------- My Packages ---------
         (callPackage ./pkgs/ninb.nix {})
+        (callPackage ./pkgs/wordle-helper.nix {})
         # -------------------------------
         (hiPrio clang-tools)
         (mpv.override {scripts = [mpvScripts.mpris];})
@@ -157,6 +158,7 @@
         sqls
         sshfs
         swaybg
+        techmino
         thermald
         tldr
         tmux
@@ -192,7 +194,7 @@
         zip
         zoxide
         # TMP JUST FOR SCHOOL
-        libreoffice-fresh
+        onlyoffice-bin
         zoom-us
         drawio
     ];
