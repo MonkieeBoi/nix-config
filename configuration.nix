@@ -92,6 +92,7 @@
         brightnessctl
         cava
         chafa
+        chatterino2
         clipse
         dotool
         dunst
@@ -363,7 +364,7 @@
             fcitx5-gtk
             fcitx5-nord
             libsForQt5.fcitx5-qt
-            libsForQt5.fcitx5-unikey
+            kdePackages.fcitx5-unikey
         ];
         fcitx5.waylandFrontend = true;
     };
