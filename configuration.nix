@@ -40,6 +40,8 @@
 
     # Enable networking
     networking.networkmanager.enable = true;
+    networking.networkmanager.insertNameservers = [ "1.1.1.1" "8.8.8.8" ];
+    networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
     time.timeZone = "Australia/Sydney";
     i18n.defaultLocale = "en_AU.UTF-8";
@@ -78,7 +80,7 @@
         (callPackage ./pkgs/ninb.nix {})
         (callPackage ./pkgs/wordle-helper.nix {})
         # -------------------------------
-        (hiPrio clang-tools)
+        (lib.hiPrio clang-tools)
         (mpv.override {scripts = [mpvScripts.mpris];})
         (pass.withExtensions (exts: [exts.pass-otp]))
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
@@ -139,6 +141,7 @@
         nodejs_22
         nordic
         nordzy-cursor-theme
+        onlyoffice-desktopeditors
         # orca-slicer
         osu-lazer-bin
         papirus-nord
@@ -195,9 +198,8 @@
         zip
         zoxide
         # TMP JUST FOR SCHOOL
-        onlyoffice-bin
-        zoom-us
-        drawio
+        # zoom-us
+        # drawio
     ];
 
     fonts.packages = with pkgs; [
@@ -244,10 +246,11 @@
         enable = true;
         # libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
         libraries = with pkgs; [
-            (glfw-wayland-minecraft.overrideAttrs (old: {
+            # glfw3-minecraft
+            (glfw3.overrideAttrs (old: {
                 patches = [
                     (fetchpatch2 {
-                      url = "https://raw.githubusercontent.com/tesselslate/waywall/012851ff6ac4ed7b74dc41683f275b8384ce36a7/doc/assets/glfw.patch";
+                      url = "https://raw.githubusercontent.com/tesselslate/waywall/be3e018bb5f7c25610da73cc320233a26dfce948/contrib/glfw.patch";
                       hash = "sha256-2PYmEUJVO9WrTbvnZp+RgJ9tTIqB9q4QVeABplH0tQY=";
                     })
                 ];
