@@ -357,6 +357,7 @@
                 blocklist-url = "https://github.com/Naunter/BT_BlockLists/raw/master/bt_blocklists.gz";
             };
         };
+        flatpak.enable = true;
     };
 
     i18n.inputMethod = {
