@@ -1,4 +1,3 @@
-# THIS ENTIRE THING IS SUPA DODGY DON'T COPY/USE LOL
 {
   lib,
   stdenv,
@@ -28,7 +27,7 @@ stdenv.mkDerivation rec {
 
     install -Dm644 ${src} $out/share/java/${name}-${version}.jar 
 
-    makeWrapper ${jre}/bin/java $out/bin/ninb \
+    makeWrapper ${jre}/bin/java $out/bin/${name} \
       --add-flags "-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -jar $out/share/java/${name}-${version}.jar" \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
@@ -46,7 +45,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     homepage = "https://github.com/Ninjabrain1/Ninjabrain-Bot";
-    description = "Accurate stronghold calculator for Minecraft speedrunning.";
+    description = "Accurate stronghold calculator for Minecraft speedrunning";
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [
       monkieeboi
