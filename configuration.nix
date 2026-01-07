@@ -183,6 +183,7 @@
             src = old.src.override {
                 rev = "ad569de1ddae6b034c7095795a42f044746a55a7";
                 hash = "sha256-CzP6PFYC6yVxUAxkJ4Zhm4Zf4Qt8u4WjXUYfkgc6nyU=";
+                tag = null;
             };
           })
         )
@@ -217,7 +218,6 @@
         dconf.enable = true;
         direnv.enable = true;
         gamemode.enable = true;
-        adb.enable = true;
         neovim = {
             enable = true;
             defaultEditor = true;
