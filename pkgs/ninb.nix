@@ -5,7 +5,11 @@
   makeWrapper,
   jre,
   libxkbcommon,
-  xorg,
+  libX11,
+  libXt,
+  libXtst,
+  libXinerama,
+  libxcb
 }:
 stdenv.mkDerivation rec {
   name = "ninb";
@@ -32,11 +36,11 @@ stdenv.mkDerivation rec {
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
           libxkbcommon
-          xorg.libX11
-          xorg.libXt
-          xorg.libXtst
-          xorg.libXinerama
-          xorg.libxcb
+          libX11
+          libXt
+          libXtst
+          libXinerama
+          libxcb
         ]
       }
 

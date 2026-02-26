@@ -87,7 +87,9 @@
         (qutebrowser.override { enableWideVine = true; })
         (python3.withPackages(ps: with ps; [ python-lsp-server ] ++ python-lsp-server.optional-dependencies.all ))
         alsa-utils
-        anki
+        (anki.overrideAttrs (oldAttrs: {
+          buildInputs = oldAttrs.buildInputs ++ [ pkgs.qt6.qtwebengine ];
+        }))
         anyrun
         auto-cpufreq
         blobdrop
@@ -136,7 +138,7 @@
         networkmanagerapplet
         ngrok
         nixd
-        nixfmt-rfc-style
+        nixfmt
         nnn
         nodejs_22
         nordic
@@ -163,6 +165,7 @@
         sshfs
         swaybg
         techmino
+        texliveSmall
         thermald
         tldr
         tmux
@@ -179,14 +182,7 @@
         vesktop
         vim
         waybar
-        (waywall.overrideAttrs (old: {
-            src = old.src.override {
-                rev = "ad569de1ddae6b034c7095795a42f044746a55a7";
-                hash = "sha256-CzP6PFYC6yVxUAxkJ4Zhm4Zf4Qt8u4WjXUYfkgc6nyU=";
-                tag = null;
-            };
-          })
-        )
+        waywall
         wget
         wl-clipboard
         wl-screenrec
