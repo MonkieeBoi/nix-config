@@ -87,9 +87,7 @@
         (qutebrowser.override { enableWideVine = true; })
         (python3.withPackages(ps: with ps; [ python-lsp-server ] ++ python-lsp-server.optional-dependencies.all ))
         alsa-utils
-        (anki.overrideAttrs (oldAttrs: {
-          buildInputs = oldAttrs.buildInputs ++ [ pkgs.qt6.qtwebengine ];
-        }))
+        anki
         anyrun
         auto-cpufreq
         blobdrop
