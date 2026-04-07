@@ -23,6 +23,7 @@
             "boot.shell_on_fail"
             "i915.enable_guc=2"
             "nowatchdog"
+            "snd_intel_dspcfg.dsp_driver=1"
         ];
         loader = {
             efi.canTouchEfiVariables = true;
@@ -31,6 +32,7 @@
         };
         extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
         extraModprobeConfig = ''
+            options snd-hda-intel model=alc255-acer,headset-mode
             options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
         '';
     };
@@ -67,7 +69,7 @@
     users.users.monke = {
         isNormalUser = true;
         description = "monke";
-        extraGroups = [ "adbusers" "networkmanager" "wheel" "input" "storage" "video" "optical" "keyd" "docker" ];
+        extraGroups = [ "adbusers" "networkmanager" "wheel" "input" "storage" "video" "render" "optical" "keyd" "docker" ];
         packages = with pkgs; [];
     };
 
@@ -192,9 +194,6 @@
         zathura
         zip
         zoxide
-        # TMP JUST FOR SCHOOL
-        # zoom-us
-        # drawio
     ];
 
     fonts.packages = with pkgs; [
@@ -240,15 +239,15 @@
         enable = true;
         # libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
         libraries = with pkgs; [
-            # glfw3-minecraft
-            (glfw3.overrideAttrs (old: {
-                patches = [
-                    (fetchpatch2 {
-                      url = "https://raw.githubusercontent.com/tesselslate/waywall/be3e018bb5f7c25610da73cc320233a26dfce948/contrib/glfw.patch";
-                      hash = "sha256-2PYmEUJVO9WrTbvnZp+RgJ9tTIqB9q4QVeABplH0tQY=";
-                    })
-                ];
-            }))
+            glfw3-minecraft
+            # (glfw3.overrideAttrs (old: {
+            #     patches = [
+            #         (fetchpatch2 {
+            #           url = "https://raw.githubusercontent.com/tesselslate/waywall/be3e018bb5f7c25610da73cc320233a26dfce948/contrib/glfw.patch";
+            #           hash = "sha256-2PYmEUJVO9WrTbvnZp+RgJ9tTIqB9q4QVeABplH0tQY=";
+            #         })
+            #     ];
+            # }))
         ];
     };
 
@@ -279,9 +278,10 @@
         portal = {
             enable = true;
             extraPortals = [
-                pkgs.xdg-desktop-portal
+                pkgs.xdg-desktop-portal-hyprland
                 pkgs.xdg-desktop-portal-gtk
             ];
+            config.common.default = [ "hyprland" "gtk" ];
         };
     };
 
