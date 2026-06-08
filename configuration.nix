@@ -2,8 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
-
+{ config, pkgs, lib, nixpkgs-stable, system, ... }:
+let
+    stable = import nixpkgs-stable {
+        inherit system;
+        # This allows unfree for the 'stable' package set
+        config.allowUnfree = true; 
+    };
+in
 {
     imports = [
         ./hardware-configuration.nix
@@ -33,7 +39,7 @@
         extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
         extraModprobeConfig = ''
             options snd-hda-intel model=alc255-acer,headset-mode
-            options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+            options v4l2loopback devices=1 video_nr=9 card_label="OBS Cam" exclusive_caps=1
         '';
     };
 
@@ -43,6 +49,7 @@
     # Enable networking
     networking.networkmanager.enable = true;
     networking.networkmanager.insertNameservers = [ "1.1.1.1" "8.8.8.8" ];
+    networking.networkmanager.wifi.powersave = false;
     networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
     time.timeZone = "Australia/Sydney";
@@ -86,15 +93,17 @@
         (mpv.override {scripts = [mpvScripts.mpris];})
         (pass.withExtensions (exts: [exts.pass-otp]))
         (wrapOBS { plugins = with obs-studio-plugins; [ obs-pipewire-audio-capture ]; })
-        (qutebrowser.override { enableWideVine = true; })
         (python3.withPackages(ps: with ps; [ python-lsp-server ] ++ python-lsp-server.optional-dependencies.all ))
         alsa-utils
         anki
         anyrun
+        ashell
         auto-cpufreq
+        bash-language-server
         blobdrop
         brightnessctl
         cava
+        google-chrome
         chafa
         chatterino2
         clipse
@@ -120,6 +129,7 @@
         imv
         java-language-server
         jdk
+        jdk25
         jq
         kdePackages.qt6ct
         keyd
@@ -157,6 +167,7 @@
         qpwgraph
         qrcp
         quickshell
+        stable.qutebrowser
         ripgrep
         satty
         simple-mtpfs
@@ -286,10 +297,12 @@
     };
 
     security.rtkit.enable = true;
+    security.polkit.enable = true;
 
     services = {
         udisks2.enable = true;
         upower.enable = true;
+        # ratbagd.enable = true;
         # printing = {
         #     enable = true;
         #     drivers = with pkgs; [ gutenprint brlaser ];
@@ -421,6 +434,13 @@
             Persistent = true;
         };
     };
+
+    environment.etc."libinput/local-overrides.quirks".text = ''
+        [Logitech G502 HERO No Debounce]
+        MatchVendor=0x046D
+        MatchProduct=0xC08B
+        ModelBouncingKeys=1
+    '';
 
     system.stateVersion = "24.05";
 }
